@@ -29,7 +29,7 @@ var dragon = {
 //Other Variables
 var kingdomName = 'Kregon'
 var weapon;
-var gem = ['Ruby', 'Saphire', 'Emerald', 'Diamond'];
+var gem = ['ruby', 'saphire', 'emerald'];
 
 //Prompt if Ready to Play
 function readyToPlay (){
@@ -73,7 +73,7 @@ var heroHelp = confirm('Will you help us?');
                 break;
             case 'bow':
                 alert('Ah the nimble bow. You plan on taking down Orcs from afar!');
-                adventurer.attack = adventurer.attack + 15;
+                adventurer.attack = adventurer.attack + 20;
                 console.log('Hero attack now ' + adventurer.attack);
                 break;
             case 'excalibur':
@@ -191,7 +191,7 @@ function orcBattleTwo () {
         if (orcFightChoice === 'a') {
                 alert('You attack the Orcs with your ' + weapon + ' dealing ' + adventurer.attack + ' damage!')
                 orcPair.health = orcPair.health - adventurer.attack;
-                console.log('The orc has ' + orcPair.health + ' health points left.');
+                console.log('The orcs have ' + orcPair.health + ' health points left.');
         } else if (orcFightChoice === 'b'){
             alert('You dodge the orc\'s attack as they lunges toward you.')
             console.log('No stat change.');
@@ -215,8 +215,8 @@ function orcBattleTwo () {
             adventurer.health = adventurer.health - orcPair.attack;
             console.log('You now have ' + adventurer.health + ' health points left.');
         }
-    } //END ROUND
-    
+    } //END ROUND/LOOP
+    //CODE TO END LOOP
     if (adventurer.health <= 0) {
         alert('You have died.');
         alert('A pair of Orcs is really hard to beat.');
@@ -230,11 +230,65 @@ function orcBattleTwo () {
 
 //SEQUENCE TWO LEFT FUNCTION PT. 2 -- ENTRANCE POINTS: function orcBattleTwo
 function sequenceTwoLeftTwo () {
-    alert('You decide to explore the room.');
+    alert('With the orcs dead you decide to explore the room.');
+    alert('As you look around the room you see a few things of note.')
+    alert('In the corner is a chest with a skull on it, on the table there is a small box, and there is a cabinet against the wall.')
+    var gemRoomChoice = prompt('Do you want to \'a\' open the chest, \'b\' open the box, \'c\' open the cabinet, or \'d\' leave the room.');
+    //BEGIN Gem Room Exploration Choice
+    while (gemRoomChoice !== 'd') {
+        if (gemRoomChoice === 'a') {
+            alert('You open the rest and find a large pile of potions.');
+            adventurer.potion = adventurer.potion + 5;
+            console.log('You know have ' + adventurer.potion + ' potions.');
+            gemRoomChoice = prompt('Do you want to \'b\' open the box, \'c\' open the cabinet, or \'d\' leave the room.');
+        } else if (gemRoomChoice === 'b') {
+            var heroGem = gem[Math.floor(Math.random () * gem.length)];
+            alert('You open the chest and find a ' + heroGem + '!');
+            //GEM OPTION IF/ELSE
+            if (heroGem === 'ruby'){
+                var heroGemPower = 'fire'; 
+                alert('You pick up the ' + heroGem + '. As you admire it you notice your ' + weapon + ' begins to glow red.');
+                alert('You touch the ' + heroGem + ' to the weapon and instantly the weapon sets a blaze.');
+                alert('You now have an ' + heroGemPower + ' ' + weapon + '!');
+                adventurer.attack = adventurer.attack + 25;
+                console.log('Your weapon now does ' + adventurer.attack + ' damage!');
+                gemRoomChoice = prompt('Do you want to \'a\' open the chest, \'c\' open the cabinet, or \'d\' leave the room.');
+            } else if (heroGem === 'saphire') {
+                var heroGemPower = 'ice'; 
+                alert('You pick up the ' + heroGem + '. As you admire it you notice your ' + weapon + ' begins to glow blue.');
+                alert('You touch the ' + heroGem + ' to the weapon and instantly the weapon turns to ice.');
+                alert('You now have an ' + heroGemPower + ' ' + weapon + '!');
+                adventurer.attack = adventurer.attack + 25;
+                console.log('Your weapon now does ' + adventurer.attack + ' damage!');
+                gemRoomChoice = prompt('Do you want to \'a\' open the chest, \'c\' open the cabinet, or \'d\' leave the room.');
+            } else if (heroGem === 'emerald') {
+                var heroGemPower = 'poison'; 
+                alert('You pick up the ' + heroGem + '. As you admire it you notice your ' + weapon + ' begins to glow green.');
+                alert('You touch the ' + heroGem + ' to the weapon and instantly the weapon sizzles.');
+                alert('You now have an ' + heroGemPower + ' ' + weapon + '!');
+                adventurer.attack = adventurer.attack + 25;
+                console.log('Your weapon now does ' + adventurer.attack + ' damage!');
+                gemRoomChoice = prompt('Do you want to \'a\' open the chest, \'c\' open the cabinet, or \'d\' leave the room.');
+            } // END GEM OPTION IF/ELSE
+        } else if (gemRoomChoice === 'c') {
+            alert('You open the cabinet and an arrow shoots you in the shoulder. It was a trap!');
+            adventurer.health = adventurer.health - 20;
+            console.log('Your health is now ' + adventurer.health + '.');
+            gemRoomChoice = prompt('Do you want to \'a\' open the chest, \'b\' open the box, or \'d\' leave the room.');
+        } else {
+            gemRoomChoice = prompt('You need to decide on something to do. Do you want to \'a\' open the chest, \'b\' open the box, \'c\' open the cabinet, or \'d\' leave the room.');
+        } //END Gem Room Exploration Choice     
+}
+    
+    if (gemRoomChoice === 'd') {
+        alert('You head out of the room and back toward the other tunnel to see if it goes deeper into the mountain.');
+        alert('Arriving back at the fork you head toward the right. It is dimly lit with torches on the wall.');
+        sequenceTwoRight ();
+    }
 }
 //SEQUENCE TWO LEFT FUNCTION PT. 2
 
-//SEQUENCE TWO RIGHT FUNCTION PT. 1
+//SEQUENCE TWO RIGHT FUNCTION PT. 1 -- ENTRANCE POINTS -- function sequenceTwo, function sequenceTwoLeft, function sequenceTwoLeftTwo
 function sequenceTwoRight () {
     alert('The smell in the tunnel begins to turn unbearable but you keep going down the tunnel.');
 }
