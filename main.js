@@ -327,8 +327,7 @@ function sequenceTwoRight () {
          if (LargeRoomChoice === 'd' && apothecaryOption === 0) {
                 //Apothecary If Else
                 var apothecarySkill = Math.floor(Math.random() * 10);
-                console.log(apothecarySkill);
-                if (apothecarySkill >= 7) {
+                if (apothecarySkill >= 5) {
                     alert('You begin mixing ingrdidents at the apothecary table with your potions.');
                     alert('Your old skills worked! Your potions are now stronger.')
                     potionStrength = potionStrength + 10;
@@ -348,8 +347,7 @@ function sequenceTwoRight () {
             } else if (LargeRoomChoice === 'e' && grinderOption === 0) {
                 //Grinder If Else
                 var grinderSkill = Math.floor(Math.random() * 10);
-                console.log(grinderSkill);
-                if (apothecarySkill >= 7) {
+                if (apothecarySkill >= 5) {
                     alert('You begin sharpening your ' + weapon + ' on the grinding stone.');
                     alert('Your blacksmith experience paid off. You weapon is now stronger!');
                     adventurer.attack = adventurer.attack + 10;
