@@ -7,11 +7,59 @@
     <body>
         <h1>DOM Doom Adventure</h1>
         <img id="splashImage" src="header_img_dragon.jpg">
-        <h4 id="storyBox">Story Box Content</h4>
-        <input class="btn-style" type="button" value="Begin Adventure" onclick="readyToPlay ()">
-        <input type='text' id='response' size="50" value="Responses here...">
-        <p><em>See Console Log for stats</em></p>
 
+    <div class="battleLoop hide">
+        <div id="battleHeadFlames">
+                <h4 id="battleBoxHead">Battle Round</h4>
+        </div>
+        <div class="battleBox">
+            <div id="storyBox">
+                <p id="storyBoxPar">Story Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box Content</p>
+            </div>
+            <div class="stats clearFix">
+            <div id="heroStats">
+                    <p id="heroStatTitle">Hero Stats:</p>
+                    <h4 id="heroStatsData"> Health: 100 — Potions: 2</h4>
+            </div>
+            <div id="enemyStats">
+                    <p id="enemyStatTitle">Enemy Stats:</p>
+                    <h4 id="enemyStatsData"> Health: 100 — Potions: 2</h4>
+            </div>
+                </div>
+            <h4 id="storyQuestion">What would you like to do?</h4>
+            <input id="beginAdventure" class="btn-style" type="button" value="Attack" onclick="readyToPlay ()">
+            <input id="beginAdventure" class="btn-style" type="button" value="Defend" onclick="readyToPlay ()">
+            <input id="beginAdventure" class="btn-style" type="button" value="Drink Potion" onclick="readyToPlay ()">
+            
+        </div>
+            </div>
+        <div class="multiChoiceBox hide">
+            <div id="storyBox">
+                <h4 id="storyBoxHead">Story Box Title</h4>
+                <p id="storyBoxPar">Story Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box Content</p>
+            </div>
+            <h4 id="storyQuestion">Question for player to act on</h4>
+            <input id="beginAdventure" class="btn-style" type="button" value="Begin Adventure" onclick="readyToPlay ()">
+            <input id="beginAdventure" class="btn-style" type="button" value="Begin Adventure" onclick="readyToPlay ()">
+            <input id="beginAdventure" class="btn-style" type="button" value="Begin Adventure" onclick="readyToPlay ()">
+        </div>
+        <div class="choiceBox">
+            <div class="hide" id="storyBox">
+                <h4 id="storyBoxHead">Story Box Title</h4>
+                <p id="storyBoxPar">Story Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box ContentStory Box Content</p>
+            </div>
+            <h4 class="hide" id="storyQuestion">Question for player to act on</h4>
+            <input id="begin" class="btn-style" type="button" value="Begin Adventure" onclick="readyToPlay ()">
+        </div>
+        <div id='response' class='hide'>
+            <input id='textInput' type='text' size="50" placeholder="Answer Query Here...">
+            <input type='submit' class="btn-style" value='Forwards!' onclick="getTextInput ()">
+        </div>
+        <div id="yesNo"  class="hide" >
+           <input id="yes" class="btn-style" type="button" value="Yes" onclick="readyToPlay ()">
+           <input id="no" class="btn-style" type="button" value="No" onclick="readyToPlay ()">
+        </div>
+        <p id="testP"><em>See Console Log for stats</em></p>
     </body>
     <script src="main.js"></script>
 </html>

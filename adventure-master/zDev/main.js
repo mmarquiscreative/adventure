@@ -29,19 +29,49 @@ var superPotionStrength = 40;
 var orcAttackOptions = [5, 10, 10, 10, 15, 15, 15, 20];
 var orcHealthOptions = [20, 25, 25, 25, 30, 30, 30, 35, 35, 35, 40, 40];
 
+var storyBoxDelay = 0;
+var yesNo;
+var textInput;
+
+function testFunction() {
+    console.log('testFunction tested');
+}
+function modifyElement (id, buttonValue){
+    document.getElementById(id).textContent= buttonValue;
+}
+
+// Modify Button function
+
+function modifyButton (id, buttonValue, buttonFunc, newId){
+    document.getElementById(id).value= buttonValue;
+    document.getElementById(id).setAttribute('onclick', buttonFunc);
+    document.getElementById(id).id= newId;
+    console.log(id + buttonValue + buttonFunc + newId);
+}
+
+// example: modifyButton ('begin', 'testing123', 'testFunction ()', 'beginAgain');
+function battleMode() {
+   document.querySelector('.choiceBox').classList.toggle('hide');
+    document.querySelector('.battleLoop').classList.toggle('hide');
+    
+}
 
 function readyToPlay (){
-    
-var begin = confirm('Are you ready to begin the adventure?');
- if (begin === true) { 
-    
-     gameStart ();
-     
+    console.log("running readyToPlay");
+     modifyButton('begin', 'test', 'battleMode ()', 'testButton'); document.getElementById('storyBox').classList.toggle('hide');
+    document.getElementById('storyQuestion').classList.toggle('hide');
+    document.getElementById('b').classList.toggle('hide');
+    popUps(confirms, 'Are you ready to begin the adventure?');
+        if (yesNo === true) { 
+            console.log("yesNo is true");
+            //gameStart ();
+        } else {
+            alerts('Come back later then');
+            console.log("yesNo isnt true");
+        }
+    console.log("finished readyToPlay");
+};
 
- } else {
-     alert('Come back later then');
- }
-}
 var timeOutID;
 //Game Start
 //readyToPlay (); now functions from HTML button
@@ -51,87 +81,136 @@ function gameOver() {
     alert('You have died.');
     throw new Error('GAME OVER!');
 }
+
+function getTextInput() {
+                console.log('started getTextInput')
+    textInput = document.getElementById('textInput').value;
+    document.getElementById('response').classList.toggle = 'hide';
+                console.log("finished getTextInput");
+
+    //pauseScript === false;
+}
 //////////
 
 // Update Story Box functions 
 // Sets a delay for story box updates
 function updateStoryBox(text1, time) {
     window.setTimeout(updateStory, time, text1);
+
 }
 // updates the 'Story Box' id in the html
 function updateStory(text) {
     document.getElementById('storyBox').textContent = text;
     console.log('running UpdateStory');
+
 }
 
 /////////////
-function popUps(type, delay, text){
-     window.setTimeout(type, delay, text);
+function popUps(type, text){
+                    console.log('started popUps')
+     window.setTimeout(type, storyBoxDelay, text);
+                    console.log('finished popUps')
 
 }
 
+
+// simple updates to story box
 
 function alerts(text) {
-    alert(text);
+                    console.log('started alerts')
+    updateStoryBox(text, storyBoxDelay);
+                    console.log('finished alerts')
 }
+
+// Typed Replies
 
 function prompts(text) {
-    prompt(text);
+                    console.log('started prompts')
+    document.getElementById('response').classList.toggle('hide');
+    updateStoryBox(text, storyBoxDelay);
+                    console.log('finished prompts')
+    //pauseScript === true;
 }
 
+// Yes or No button answers
+
 function confirms(text) {
-    confirm(text);
+                    console.log('started confirms')
+    document.getElementById('yesNo').classList.toggle('hide');
+    updateStoryBox(text, storyBoxDelay);
+    document.getElementById('yes').addEventListener('click', returnYes);
+    document.getElementById('no').addEventListener('click', returnNo)
+                    console.log('finished confirms')
+    //pauseScript === true;
+}
+
+function returnYes() {
+                    console.log('started returnYes')
+    yesNo === true;
+    document.getElementById('yesNo').classList.toggle('hide');
+                    console.log('finished returnYes')
+}
+    
+function returnNo() {
+                    console.log('started returnNo')
+    yesNo === false;
+    document.getElementById('yesNo').classList.toggle('hide');
+                    console.log('finished returnNo')
 }
 /////////////////////////
 // Part One            //   
 /////////////////////////
 
 function gameStart (){
+                    console.log('started gameStart')
 updateStory('The land is in peril. We have been overrun with Orcs and need your help!');
-    var namePlayer = popUps(prompts, 1000, 'What is your name?');
-var heroHelp = popUps(confirms, 1000, 'Will you help us?');
-    if (heroHelp === true) {
+    popUps(prompts, 'What is your name?');
+    var namePlayer = textInput;
+    popUps(confirms, 'Will you help us?');
+    if (yesNo === true) {
         alerts('We are most gracious! To help you on this quest you may select a weapon of your choice!');
 
         //Begin Weapon Select
-        weapon = prompt('Would you like a sword, axe, mace, or bow?');
-        switch (weapon) {
+        prompts('Would you like a sword, axe, mace, or bow?');
+        switch (textInput) {
             case 'sword':
-                alert('That is the sharpest sword in all the land!');
+                alerts('That is the sharpest sword in all the land!');
                 adventurer.attack = adventurer.attack + weaponStrength[Math.floor(Math.random () * weaponStrength.length)];
                 console.log('Hero attack now ' + adventurer.attack);
                 break;
             case 'axe':
-                alert('That axe will help you tear throw a lot of Orcs. Use it wisely.');
+                alerts('That axe will help you tear throw a lot of Orcs. Use it wisely.');
                 adventurer.attack = adventurer.attack + weaponStrength[Math.floor(Math.random () * weaponStrength.length)];
                 console.log('Hero attack now ' + adventurer.attack);
                 break;
             case 'mace':
-                alert('That mace is a favorite of our blacksmith. Good for smashing Orcs');
+                alerts('That mace is a favorite of our blacksmith. Good for smashing Orcs');
                 adventurer.attack = adventurer.attack + weaponStrength[Math.floor(Math.random () * weaponStrength.length)];
                 console.log('Hero attack now ' + adventurer.attack);
                 break;
             case 'bow':
-                alert('Ah the nimble bow. You plan on taking down Orcs from afar!');
+                alerts('Ah the nimble bow. You plan on taking down Orcs from afar!');
                 adventurer.attack = adventurer.attack + weaponStrength[Math.floor(Math.random () * weaponStrength.length)];
                 console.log('Hero attack now ' + adventurer.attack);
                 break;
             case 'excalibur':
-                alert('How... how did you know we had Excalibur? That was supposed to be a secret. Very well, you may take Excalibur on your quest.');
+                alerts('How... how did you know we had Excalibur? That was supposed to be a secret. Very well, you may take Excalibur on your quest.');
                 adventurer.attack = adventurer.attack + 100;
                 console.log('Hero attack now ' + adventurer.attack);
                 break;
             default:
-                alert('Err. I\'m not sure why you would want to use that as your weapon, but hey, you do you.');
+                alerts('Err. I\'m not sure why you would want to use that as your weapon, but hey, you do you.');
                 adventurer.attack = adventurer.attack + 5;
                 console.log('Hero attack now ' + adventurer.attack);
                                  } //End Weapon Select
-        alert('We are so happy for you to be helping us. I know that it is a long and dangerous road ahead.')
-        sequenceOne (); //Start Next Function
+        alerts('We are so happy for you to be helping us. I know that it is a long and dangerous road ahead.')
+        //sequenceOne (); //Start Next Function
     } else {
-        alert('Well fine. It\'s not like we don\'t have women or children or anything. Just leave us to die. That\'s cool.')
-        alert('Jerk.');
+        alerts('Well fine. It\'s not like we don\'t have women or children or anything. Just leave us to die. That\'s cool.')
+        alerts('Jerk.');
     }
+                        console.log('finished gameStart');
+
 }
 
 //FIRST ENCOUNTER WITH ORCS
