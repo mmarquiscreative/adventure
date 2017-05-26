@@ -1,34 +1,27 @@
-//Set Base Stats
-var adventurer = {
-    attack: 0,
-    health: 60,
-    potion: 2,
+
+var GameCharacter = function(attack, health, stamina, potion, attackName, spellLvl, spellName){
+    this.attack = attack;
+    this.health = health;
+    this.stamina = stamina;
+    this.potion = potion;
+    this.attackName = attackName;
+    this.spell = spellLvl;
+    this.spellName = spellName;
 };
 
-var orc = {
-    attack: 0,
-    health: 0,
-};
+var adventurer = new GameCharacter(0, 60, 60, 2);
+var orc = new GameCharacter(15, 60, 60, 2, 1, 'Crude Club', 'Simple Charm: ', 'Phlegm');
+var orcPair = new GameCharacter(30, 120, 60, 2, 2, 'Brutal Mace', 'Intermediate Hex: ','Tango for Two');
+var troll = new GameCharacter(60, 300, 300, 1, 3, 'Skull-Encrusted Hammer', 'Super Incredible Encantation: ', 'Abyssmal Pressure');
+var dragon = new GameCharacter(120, 60, 60, 2, 4, 'Jeweled Claws', 'Dragon-God Conjuration: ', 'Magma-jestic Battle Fire');
 
-var orcPair = {
-    attack: 15,
-    health: 40,
-};
-
-var troll = {
-    attack: 25,
-    health: 75,
-};
+var leviathan = new GameCharacter(250, 1000, 1000, 10, 6, 'Maw of Man-sized Teeth', 'Ultimate Boss-Level Magic Cast: ', 'Super Soaker');
 
 
-var dragon = {
-    attack: 50,
-    health: 150,
-};
 
 //Other Variables
 var kingdomName = 'Kregon'
-var weapon;
+var weapon = 'Sword';
 var gem = ['ruby', 'saphire', 'emerald'];
 var weaponStrength = [15, 20, 20, 20, 25, 25, 25, 30];
 var potionStrength = 20;
@@ -36,19 +29,111 @@ var superPotionStrength = 40;
 var orcAttackOptions = [5, 10, 10, 10, 15, 15, 15, 20];
 var orcHealthOptions = [20, 25, 25, 25, 30, 30, 30, 35, 35, 35, 40, 40];
 
+var storyBoxDelay = 0;
+var yesNo;
+var textInput;
 
-//Prompt if Ready to Play
-function readyToPlay (){
-var begin = confirm('Are you ready to begin the adventure?');
- if (begin === true) { 
-    gameStart ();
- } else {
-     alert('Come back later then');
- }
+function testFunction() {
+    console.log('testFunction tested');
 }
+function modifyElement (id, buttonValue){
+    document.getElementById(id).textContent= buttonValue;
+}
+// Toggle choice box
+function toggleChoiceBox() {
+    document.querySelector('.choiceBox').classList.toggle('hide');
+};
 
-//Game Start
-//readyToPlay (); now functions from HTML button
+// Toggle multi-choice box
+function toggleMultiBox() {
+    document.querySelector('.multiChoiceBox').classList.toggle('hide');
+};
+
+// Toggle battle mode
+function toggleBattleMode() {
+    document.querySelector('.battleLoop').classList.toggle('hide');
+};
+
+// Toggle Response boxes
+function toggleResponseBox() {
+   document.getElementById('response').classList.toggle('hide');
+};
+
+// Toggle yes/no buttons
+function toggleYesNo() {
+    document.getElementById('yesNo').classList.toggle('hide');
+};
+
+// modifyButton
+function modifyButton (id, buttonValue, buttonFunc, newId){
+    document.getElementById(id).value= buttonValue;
+    document.getElementById(id).setAttribute('onclick', buttonFunc);
+    document.getElementById(id).id= newId;
+    console.log(id + buttonValue + buttonFunc + newId);
+};
+
+// modifyButtonFunction
+function modifyButtonFunc (id, buttonFunc){
+    document.getElementById(id).setAttribute('onclick', buttonFunc);
+};
+
+// update STory Header
+function modifyStoryHead(text){
+    document.querySelector('#storyBoxHeadCh').innerHTML = text;
+};
+
+// update Story Paragraph
+function modifyStoryPar(text){
+    console.log(text);
+    document.querySelector('#storyBoxParCh').innerHTML=text;
+};
+
+// update Story Question
+function modifyStoryQuestion(text) {
+    document.querySelector('#storyQuestionCh').textContent = text;
+};
+
+function sequence0n1 (){
+    var x = 'Ch';
+    console.log("began sequence0n1");
+    document.getElementById('begin').classList.toggle('hide');
+    toggleChoiceBox();
+    toggleYesNo();
+    modifyButtonFunc('yes', 'sequence0n2 ()');
+    modifyButtonFunc('no', 'sequence0n1 ()');
+    modifyStoryHead('Welcome to Sunny ' + kingdomName);
+    modifyStoryPar('Welcome, hero. Our great land is in peril. We have been overrun with Orcs and need your help!');
+    modifyStoryQuestion('Will you help us?');
+    console.log("finished sequence0n1");
+};
+
+
+function sequence0n2(){
+    modifyStoryHead('Excellent!');
+    modifyStoryPar('We are most gracious! To help you on this quest you may select a weapon of your choice!');
+    modifyStoryQuestion('Would you like a sword, axe, mace, bow or something else?');
+    toggleResponseBox();
+}
+    
+// sequence0n2: will you help?
+// sequence0n3: choose weapon
+
+
+//// sequence1
+// sequence1n1: walking when orcs attack
+// sequence1n2: orc battle
+// sequence1n3: victory see cave
+
+//// sequence2
+// sequence2n1: enter cave, go left or right?
+// sequence2n2: right = sequence3
+// sequence2n3: left: closed door, open or turn around?
+    // turn around = sequence3n1:
+// sequence2n4: open door, orc battle
+// sequence2n5: victory, choose prize
+
+//// sequence3
+// sequence3n1: head other way
 
 function gameOver() {
     alert('You fall to your knees. The last breath fades from your body as all fades to black.');
@@ -56,58 +141,135 @@ function gameOver() {
     throw new Error('GAME OVER!');
 }
 
+function getTextInput() {
+                console.log('started getTextInput')
+    textInput = document.getElementById('textInput').value;
+    document.getElementById('response').classList.toggle = 'hide';
+                console.log("finished getTextInput");
+
+    //pauseScript === false;
+}
+//////////
+
+// Update Story Box functions 
+// Sets a delay for story box updates
+function updateStoryBox(text1, time) {
+    window.setTimeout(updateStory, time, text1);
+
+}
+// updates the 'Story Box' id in the html
+function updateStory(text) {
+    document.getElementById('storyBox').textContent = text;
+    console.log('running UpdateStory');
+
+}
+
+/////////////
+function popUps(type, text){
+                    console.log('started popUps')
+     window.setTimeout(type, storyBoxDelay, text);
+                    console.log('finished popUps')
+
+}
+
+
+// simple updates to story box
+
+function alerts(text) {
+                    console.log('started alerts')
+    updateStoryBox(text, storyBoxDelay);
+                    console.log('finished alerts')
+}
+
+// Typed Replies
+
+function prompts(text) {
+                    console.log('started prompts')
+    document.getElementById('response').classList.toggle('hide');
+    updateStoryBox(text, storyBoxDelay);
+                    console.log('finished prompts')
+    //pauseScript === true;
+}
+
+// Yes or No button answers
+
+function confirms(text) {
+                    console.log('started confirms')
+    document.getElementById('yesNo').classList.toggle('hide');
+    updateStoryBox(text, storyBoxDelay);
+    document.getElementById('yes').addEventListener('click', returnYes);
+    document.getElementById('no').addEventListener('click', returnNo)
+                    console.log('finished confirms')
+    //pauseScript === true;
+}
+
+function returnYes() {
+                    console.log('started returnYes')
+    yesNo === true;
+    document.getElementById('yesNo').classList.toggle('hide');
+                    console.log('finished returnYes')
+}
+    
+function returnNo() {
+                    console.log('started returnNo')
+    yesNo === false;
+    document.getElementById('yesNo').classList.toggle('hide');
+                    console.log('finished returnNo')
+}
 /////////////////////////
 // Part One            //   
 /////////////////////////
 
 function gameStart (){
-var namePlayer = prompt('What is your name?');
+                    console.log('started gameStart')
+updateStory('The land is in peril. We have been overrun with Orcs and need your help!');
+    popUps(prompts, 'What is your name?');
+    var namePlayer = textInput;
+    popUps(confirms, 'Will you help us?');
+    if (yesNo === true) {
+        alerts('We are most gracious! To help you on this quest you may select a weapon of your choice!');
 
-alert('Welcome to the kingdom of ' + kingdomName + ', ' + namePlayer + '!' );
-alert('The land is in peril. We have been overrun with Orcs and need your help!');
-var heroHelp = confirm('Will you help us?');
-    if (heroHelp === true) {
-        alert('We are most gracious! To help you on this quest you may select a weapon of your choice!');
-        
         //Begin Weapon Select
-        weapon = prompt('Would you like a sword, axe, mace, or bow?');
-        switch (weapon) {
+        prompts('Would you like a sword, axe, mace, or bow?');
+        switch (textInput) {
             case 'sword':
-                alert('That is the sharpest sword in all the land!');
+                alerts('That is the sharpest sword in all the land!');
                 adventurer.attack = adventurer.attack + weaponStrength[Math.floor(Math.random () * weaponStrength.length)];
                 console.log('Hero attack now ' + adventurer.attack);
                 break;
             case 'axe':
-                alert('That axe will help you tear throw a lot of Orcs. Use it wisely.');
+                alerts('That axe will help you tear throw a lot of Orcs. Use it wisely.');
                 adventurer.attack = adventurer.attack + weaponStrength[Math.floor(Math.random () * weaponStrength.length)];
                 console.log('Hero attack now ' + adventurer.attack);
                 break;
             case 'mace':
-                alert('That mace is a favorite of our blacksmith. Good for smashing Orcs');
+                alerts('That mace is a favorite of our blacksmith. Good for smashing Orcs');
                 adventurer.attack = adventurer.attack + weaponStrength[Math.floor(Math.random () * weaponStrength.length)];
                 console.log('Hero attack now ' + adventurer.attack);
                 break;
             case 'bow':
-                alert('Ah the nimble bow. You plan on taking down Orcs from afar!');
+                alerts('Ah the nimble bow. You plan on taking down Orcs from afar!');
                 adventurer.attack = adventurer.attack + weaponStrength[Math.floor(Math.random () * weaponStrength.length)];
                 console.log('Hero attack now ' + adventurer.attack);
                 break;
             case 'excalibur':
-                alert('How... how did you know we had Excalibur? That was supposed to be a secret. Very well, you may take Excalibur on your quest.');
+                alerts('How... how did you know we had Excalibur? That was supposed to be a secret. Very well, you may take Excalibur on your quest.');
                 adventurer.attack = adventurer.attack + 100;
                 console.log('Hero attack now ' + adventurer.attack);
                 break;
             default:
-                alert('Err. I\'m not sure why you would want to use that as your weapon, but hey, you do you.');
+                alerts('Err. I\'m not sure why you would want to use that as your weapon, but hey, you do you.');
                 adventurer.attack = adventurer.attack + 5;
                 console.log('Hero attack now ' + adventurer.attack);
                                  } //End Weapon Select
-        alert('We are so happy for you to be helping us. I know that it is a long and dangerous road ahead.')
-        sequenceOne (); //Start Next Function
+        alerts('We are so happy for you to be helping us. I know that it is a long and dangerous road ahead.')
+        //sequenceOne (); //Start Next Function
     } else {
-        alert('Well fine. It\'s not like we don\'t have women or children or anything. Just leave us to die. That\'s cool.')
-        alert('Jerk.');
+        alerts('Well fine. It\'s not like we don\'t have women or children or anything. Just leave us to die. That\'s cool.')
+        alerts('Jerk.');
     }
+                        console.log('finished gameStart');
+
 }
 
 //FIRST ENCOUNTER WITH ORCS
@@ -118,15 +280,88 @@ function sequenceOne () {
     orcBattle ();
     sequenceTwo ();
 }
-//END FIRST ENCOUNTER WITH ORCS
 
-/////////////////////////
-// End Part One        //   
-/////////////////////////
-
-/////////////////////////
-// ORC BATTLE FUNCTION //   
-/////////////////////////
+function attackDamage(damageTarget, damageSource) {
+    if (damageTarget !== 'Adventurer') {
+        alert('You attack the ' + damageTarget + ' your ' + weapon + ' dealing ' + adventurer.attack + ' damage!');
+    switch(damageTarget) {
+        case 'Orc': 
+            orc.health -= adventurer.attack;
+            console.log('The orc has ' + orc.health + ' health points left.');
+            console.log('The orc has ' + orc.stamina + ' stamina points left.');
+            console.log('The orc has ' + orc.potion + ' potions left.');
+            break;
+        case 'Orc Pair': 
+            orcPair.health -= adventurer.attack;
+            console.log('The Orc Pair has ' + orcPair.health + ' health points left.');
+            console.log('The Orc Pair has ' + orcPair.stamina + ' stamina points left.');
+            console.log('The Orc Pair has ' + orcPair.potion + ' potions left.');
+            break;
+        case 'Troll': 
+            troll.health -= adventurer.attack;
+            console.log('The Troll has ' + troll.health + ' health points left.');
+            console.log('The Troll has ' + troll.stamina + ' stamina points left.');
+            console.log('The Troll has ' + troll.potion + ' potions left.');
+            break;
+        case 'Dragon': 
+            dragon.health -= adventurer.attack;
+            console.log('The Dragon has ' + dragon.health + ' health points left.');
+            console.log('The Dragon has ' + dragon.stamina + ' stamina points left.');
+            console.log('The Dragon has ' + dragon.potion + ' potions left.');
+            break;
+        case 'Leviathan': 
+            leviathan.health -= adventurer.attack;
+            console.log('The Leviathan has ' + leviathan.health + ' health points left.');
+            console.log('The Leviathan has ' + leviathan.stamina + ' stamina points left.');
+            console.log('The Leviathan has ' + leviathan.potion + ' potions left.');
+            break;
+        default: 
+            console.log('Something for attackDamage didn\'t work' + 'damageTarget submitted was: ' + enemy);
+    }
+    } else if (damageTarget === 'Adventurer'){
+            switch(damageSource) {
+        case 'Orc': 
+            alert('You are attacked by the ' + damageSource + 'It attacked with a ' + orc.attackName + ' dealing ' + orc.attack + ' damage!');
+            adventurer.health -= orc.attack;
+            console.log('You have ' + adventurer.health + ' health points left.');
+            console.log('You have ' + adventurer.stamina + ' health points left.');
+            console.log('You have ' + adventurer.potion + ' health points left.');
+            break;
+        case 'Orc Pair': 
+            alert('You are attacked by the ' + damageSource + 'They attacked with a ' + orc.attackName + ' dealing ' + orcPair.attack + ' damage!');
+            adventurer.health -= orcPair.attack;
+            console.log('You have ' + adventurer.health + ' health points left.');
+            console.log('You have ' + adventurer.stamina + ' health points left.');
+            console.log('You have ' + adventurer.potion + ' health points left.');
+            break;
+        case 'Troll': 
+            alert('You are attacked by the ' + damageSource + 'It attacked with a ' + orc.attackName + ' dealing ' + troll.attack + ' damage!');
+            adventurer.health -= troll.attack;
+            console.log('You have ' + adventurer.health + ' health points left.');
+            console.log('You have ' + adventurer.stamina + ' health points left.');
+            console.log('You have ' + adventurer.potion + ' health points left.');
+            break;
+        case 'Dragon': 
+            alert('You are attacked by the ' + damageSource + 'It attacked with its ' + dragon.attackName + ' dealing ' + adventurer.attack + ' damage!');
+            adventurer.health -= dragon.attack;
+            console.log('You have ' + adventurer.health + ' health points left.');
+            console.log('You have ' + adventurer.stamina + ' health points left.');
+            console.log('You have ' + adventurer.potion + ' health points left.');
+            break;
+        case 'Leviathan': 
+            alert('You are attacked by the ' + damageSource + 'It attacked with its ' + leviathan.attackName + ' dealing ' + leviathan.attack + ' damage!');
+            adventurer.health -= leviathan.attack;
+            console.log('You have ' + adventurer.health + ' health points left.');
+            console.log('You have ' + adventurer.stamina + ' health points left.');
+            console.log('You have ' + adventurer.potion + ' health points left.');
+            break;
+        default: 
+            console.log('Something for attackDamage didn\'t work' + 'damageSource submitted was: ' + damageSource);
+    } 
+    }else {
+        console.log('input not correct. damageTarget submitted was: ' + damageTarget + ' damageSource submitted was: ' + damageSource);
+    }
+};
 function orcBattle () {
     orc.attack = orcAttackOptions[Math.floor(Math.random () * orcAttackOptions.length)];
     orc.health = orcHealthOptions[Math.floor(Math.random () * orcHealthOptions.length)];
@@ -135,15 +370,28 @@ function orcBattle () {
     
     while (adventurer.health > 0 && orc.health > 0) {
         //AVENTURER SEQUENCE
-        var orcFightChoice = prompt('Do you want to attack? \'a\', defend \'b\', or drink a potion \'c\'?')
-        if (orcFightChoice === 'a') {
+        var fightChoice = prompt('Do you want to attack? \'a\', defend \'b\', or drink a potion \'c\'?')
+        if (fightChoice === 'a') {
+                /* var orcReaction = Math.floor(Math.random() * 3 + 1);
+                if (orcReaction = 1) {
+                    alert('You and the Orc attack at the same time! Your weapons catch each other in mid-air, no damage was dealt.');
+                    var fightChoiceStamina = prompt('Use 5 stamina to overpower and deal some damage? \'a\', Step back to prepare for the next attack? \'b\', or Insult opponent? \'c\'?')
+                    if (fightChoiceStamina === 'a'){
+                        
+                    }
+                } else if (orcReaction = 2) {
+                    
+                }*/
+                /*
                 alert('You attack the Orc your ' + weapon + ' dealing ' + adventurer.attack + ' damage!')
                 orc.health = orc.health - adventurer.attack;
                 console.log('The orc has ' + orc.health + ' health points left.');
-        } else if (orcFightChoice === 'b'){
+                */
+            attackDamage('Orc', 'Adventurer');
+        } else if (fightChoice === 'b'){
             alert('You dodge the orc\'s attack as he lunges toward you.')
             console.log('No stat change.');
-        } else if (orcFightChoice === 'c'){
+        } else if (fightChoice === 'c'){
             if (adventurer.potion > 0) {
                 alert('You drink a potion and immediately feel it running through your veins.');
                 adventurer.health = adventurer.health + potionStrength;
@@ -158,275 +406,11 @@ function orcBattle () {
         } //END AVENTURER SEQUENCE   
         
         //ORC SEQUENCE
-        if (orc.health > 0 && orcFightChoice !== 'b') {
+        if (orc.health > 0 && fightChoice !== 'b') {
             alert('The orc swings his rusty blade and slices you across the chest doing ' + orc.attack + ' damage!');
             adventurer.health = adventurer.health - orc.attack;
             console.log('You now have ' + adventurer.health + ' health points left.');
         }
     } //END ROUND
+}
     
-    if (adventurer.health <= 0) {
-        gameOver();
-    } else if (orc.health <= 0) {
-        alert('You have vanquished the Orc!');
-    } 
-}
-/////////////////////////////
-// END ORC BATTLE FUNCTION //   
-/////////////////////////////
-
-/////////////////////////
-// Part Two            //   
-/////////////////////////
-
-// SEQUENCE TWO START FUNCTION
-function sequenceTwo () {
-    alert('You proudly stand over the mangled carcus of the orc. After cleaning your weapon you proceed toward the cave.');
-    alert('As you approach the cave you see piles of bones surround the entrance, a small shiver rolls down your spine.');
-    // Begin Directional Choice
-    var sequenceTwoDirection = confirm('You proceed slowly down the entrance of the cave until you come to a fork in the tunnel. To go left select \'ok\' and to go right select \'cancel\'.');
-           if (sequenceTwoDirection === true) {
-                alert('You walk down the tunnel to the left and observe odd drawings and symbols all over the wall.');
-                sequenceTwoLeft ();
-            } else {
-                alert('You head toward the tunnel on the right. It is dimly lit with torches on the wall.');
-                sequenceTwoRight ();
-            }
-}
-// END SEQUENCE TWO START FUNCTION
-
-/////////////////////////
-// Part Two Left       //   
-/////////////////////////
-// SEQUENCE TWO LEFT FUNCTION PT. 1 -- ENTRANCE POINTS: function sequenceTWO
-function sequenceTwoLeft () {
-    alert('As you walk down the tunnel you see a dim light from around the corner.');
-    alert('You round the corner and see a door with two torches on either side. There are strange noises and rumblings coming from inside.');
-    var sequenceTwoLeftChoice1 = confirm('Do you go through the door or turn back? To go through select \'ok\' and to go back select \'cancel\'.');
-        if (sequenceTwoLeftChoice1 === true) {
-            alert('You open the door and go inside.');
-            alert('Upon entering the room you see two orcs at a table fighting over a piece of meat.');
-            alert('You try to stay quiet but the Orcs quickly realize you are there and attack.');
-            orcBattle ();
-            sequenceTwoLeftTwo ();
-        } else {
-            alert('Fear overcomes you and you turn back toward the other tunnel.');
-            alert('Arriving back at the fork you head toward the right. It is dimly lit with torches on the wall.');
-            sequenceTwoRight ();
-        }
-}
-// END SEQUENCE TWO LEFT FUNCTION PT. 1
-
-
-//SEQUENCE TWO LEFT FUNCTION PT. 2 -- ENTRANCE POINTS: function orcBattleTwo
-function sequenceTwoLeftTwo () {
-    alert('With the orcs dead you decide to explore the room.');
-    alert('As you look around the room you see a few things of note.')
-    alert('In the corner is a chest with a skull on it, on the table there is a small box, and there is a cabinet against the wall.')
-    var gemRoomChoice = prompt('Do you want to \'a\' open the chest, \'b\' open the box, \'c\' open the cabinet, or \'d\' leave the room.');
-    var gemCounterA = 0;
-    var gemCounterB = 0;
-    var gemCounterC = 0;
-    //BEGIN Gem Room Exploration Choice
-    while (gemRoomChoice !== 'd') {
-
-                    if (gemRoomChoice === 'a' && gemCounterA === 0) {
-                        alert('You open the chest and find a large pile of potions.');
-                        adventurer.potion = adventurer.potion + 5;
-                        console.log('You know have ' + adventurer.potion + ' potions.');
-                        gemCounterA++
-                        gemRoomChoice = prompt('Do you want to \'b\' open the box, \'c\' open the cabinet, or \'d\' leave the room.');
-                    } else if (gemRoomChoice === 'a' && gemCounterA > 0) {
-                        alert('You already opened the chest.');
-                        gemRoomChoice = prompt('Do you want to \'b\' open the box, \'c\' open the cabinet, or \'d\' leave the room.');
-                    } else if (gemRoomChoice === 'b' && gemCounterB === 0) {
-                        var heroGem = gem[Math.floor(Math.random () * gem.length)];
-                        alert('You open the chest and find a ' + heroGem + '!');
-                        //GEM OPTION IF/ELSE
-                        if (heroGem === 'ruby'){
-                            var heroGemPower = 'fire'; 
-                            alert('You pick up the ' + heroGem + '. As you admire it you notice your ' + weapon + ' begins to glow red.');
-                            alert('You touch the ' + heroGem + ' to the weapon and instantly the weapon sets a blaze.');
-                            alert('You now have a ' + heroGemPower + ' ' + weapon + '!');
-                            adventurer.attack = adventurer.attack + 25;
-                            gemCounterB++
-                            console.log('Your weapon now does ' + adventurer.attack + ' damage!');
-                            gemRoomChoice = prompt('Do you want to \'a\' open the chest, \'c\' open the cabinet, or \'d\' leave the room.');
-                        } else if (heroGem === 'saphire') {
-                            var heroGemPower = 'ice'; 
-                            alert('You pick up the ' + heroGem + '. As you admire it you notice your ' + weapon + ' begins to glow blue.');
-                            alert('You touch the ' + heroGem + ' to the weapon and instantly the weapon turns to ice.');
-                            alert('You now have an ' + heroGemPower + ' ' + weapon + '!');
-                            adventurer.attack = adventurer.attack + 25;
-                            console.log('Your weapon now does ' + adventurer.attack + ' damage!');
-                            gemCounterB++
-                            gemRoomChoice = prompt('Do you want to \'a\' open the chest, \'c\' open the cabinet, or \'d\' leave the room.');
-                        } else if (heroGem === 'emerald') {
-                            var heroGemPower = 'poison'; 
-                            alert('You pick up the ' + heroGem + '. As you admire it you notice your ' + weapon + ' begins to glow green.');
-                            alert('You touch the ' + heroGem + ' to the weapon and instantly the weapon sizzles.');
-                            alert('You now have a ' + heroGemPower + ' ' + weapon + '!');
-                            adventurer.attack = adventurer.attack + 25;
-                            console.log('Your weapon now does ' + adventurer.attack + ' damage!');
-                            gemCounterB++
-                            gemRoomChoice = prompt('Do you want to \'a\' open the chest, \'c\' open the cabinet, or \'d\' leave the room.');
-                        } // END GEM OPTION IF/ELSE
-                    } else if (gemRoomChoice === 'b' && gemCounterB > 0) {
-                        alert('You already opened the box.');
-                        gemRoomChoice = prompt('Do you want to \'a\' open the chest, \'c\' open the cabinet, or \'d\' leave the room.');
-                    } else if (gemRoomChoice === 'c' && gemCounterC === 0) {
-                        alert('You open the cabinet and an arrow shoots you in the shoulder. It was a trap!');
-                        adventurer.health = adventurer.health - 20;
-                        console.log('Your health is now ' + adventurer.health + '.');
-                        gemCounterC++
-                        if (adventurer.health > 0) {
-                             gemRoomChoice = prompt('Do you want to \'a\' open the chest, \'b\' open the box, or \'d\' leave the room.');
-                        } else {
-                            gameOver ();
-                        }
-                    } else if (gemRoomChoice === 'c' && gemCounterC > 0) {
-                        alert('You already opened the cabinet, do you really want to get shot again?');
-                        gemRoomChoice = prompt('Do you want to \'a\' open the chest, \'b\' open the box, or \'d\' leave the room.');
-                    } else {
-                        gemRoomChoice = prompt('You need to decide on something to do. Do you want to \'a\' open the chest, \'b\' open the box, \'c\' open the cabinet, or \'d\' leave the room.');
-                    } //END Gem Room Exploration Choice     
-        
-        
-}// END FIRST WHILE
-    
-    if (gemRoomChoice === 'd') {
-        alert('You head out of the room and back toward the other tunnel to see if it goes deeper into the mountain.');
-        alert('Arriving back at the fork you head toward the right. It is dimly lit with torches on the wall.');
-        sequenceTwoRight ();
-    }
-}
-//SEQUENCE TWO LEFT FUNCTION PT. 2
-
-/////////////////////////
-// End Part Two Left   //   
-/////////////////////////
-
-/////////////////////////
-// Part Two Right      //   
-/////////////////////////
-
-//SEQUENCE TWO RIGHT FUNCTION PT. 1 -- ENTRANCE POINTS -- function sequenceTwo, function sequenceTwoLeft, function sequenceTwoLeftTwo
-function sequenceTwoRight () {
-    alert('At the end of the tunnel you come to another fork.');
-    alert('You try to go left but a few feet in you realize it is caved in.');
-    alert('You head back down the other tunnel and enter a large open room.');
-    alert('Before you have a chance to explore an Orc charges at you.');
-    orcBattle();
-    alert('Now that the Orc is dead you have a chance to check around the room.');
-    alert('There are three doors; one to the left, one to the right, and one at the top of a staircase. There is also an apothecary table and a grinding stone.');
-    var LargeRoomChoice = prompt('What would you like to do? \'a\' go through door to left, \'b\' go through door to the right, \'c\' go through door at the top of the stairs, \'d\' try using the apothecary table, \'e\' try using the grinding stone.');
-    var apothecaryOption = 0;
-    var grinderOption = 0;
-
-    while (LargeRoomChoice !== 'a' && LargeRoomChoice !== 'b' && LargeRoomChoice !== 'c'){    
-         if (LargeRoomChoice === 'd' && apothecaryOption === 0) {
-                //Apothecary If Else
-                var apothecarySkill = Math.floor(Math.random() * 10);
-                if (apothecarySkill >= 5) {
-                    alert('You begin mixing ingrdidents at the apothecary table with your potions.');
-                    alert('Your old skills worked! Your potions are now stronger.')
-                    potionStrength = potionStrength + 10;
-                    console.log('Potions now give ' + potionStrength + ' health points back.');
-                    apothecaryOption++
-                    LargeRoomChoice = prompt('What would you like to do? \'a\' go through door to left, \'b\' go through door to the right, \'c\' go through door at the top of the stairs, \'e\' try using the grinding stone.');
-                } else {
-                    alert('You begin mixing ingreidents at the apothecary table with your potions.');
-                    alert('You can\'t get the ingreidents to mix properly and don\'t make the potions stronger')
-                    apothecaryOption++
-                    LargeRoomChoice = prompt('What would you like to do? \'a\' go through door to left, \'b\' go through door to the right, \'c\' go through door at the top of the stairs, \'e\' try using the grinding stone.');
-                }
-                //End Apothecary If Else
-            } else if (LargeRoomChoice === 'd' && apothecaryOption > 0) {
-                alert('You already used the apothecary set.');
-                LargeRoomChoice = prompt('What would you like to do? \'a\' go through door to left, \'b\' go through door to the right, \'c\' go through door at the top of the stairs, \'e\' try using the grinding stone.');
-            } else if (LargeRoomChoice === 'e' && grinderOption === 0) {
-                //Grinder If Else
-                var grinderSkill = Math.floor(Math.random() * 10);
-                if (apothecarySkill >= 5) {
-                    alert('You begin sharpening your ' + weapon + ' on the grinding stone.');
-                    alert('Your blacksmith experience paid off. You weapon is now stronger!');
-                    adventurer.attack = adventurer.attack + 10;
-                    console.log('Your ' + weapon + ' now does ' + adventurer.attack + ' damage.');
-                    grinderOption++
-                    LargeRoomChoice = prompt('What would you like to do? \'a\' go through door to left, \'b\' go through door to the right, \'c\' go through door at the top of the stairs, \'e\' try using the grinding stone.');
-                } else {
-                    alert('You try sharpening your ' + weapon + ' on the grinding stone.');
-                    alert('The grinding stone is broken.');
-                    grinderOption++
-                    LargeRoomChoice = prompt('What would you like to do? \'a\' go through door to left, \'b\' go through door to the right, \'c\' go through door at the top of the stairs, \'d\' try using the apothecary table');
-                }
-                //End Grinder If Else
-            } else if (LargeRoomChoice === 'e' && grinderOption > 0) {
-                alert('Remember the grinding stone is broken.');
-                LargeRoomChoice = prompt('What would you like to do? \'a\' go through door to left, \'b\' go through door to the right, \'c\' go through door at the top of the stairs, \'d\' try using the apothecary table');
-            } else {
-                LargeRoomChoice = prompt('What would you like to do? \'a\' go through door to left, \'b\' go through door to the right, \'c\' go through door at the top of the stairs, \'d\' try using the apothecary table, \'e\' try using the grinding stone.');
-            }      
-    } //END WHILE LOOP
-        if (LargeRoomChoice === 'a') {
-        sequenceTwoRightOne ();
-    } else if (LargeRoomChoice === 'b') {
-        sequenceTwoRightTwo ();
-    } else if (LargeRoomChoice === 'c') {
-        sequenceTwoRightThree ();
-    } 
-}
-
-//END SEQUENCE TWO RIGHT FUNCTION PT. 1 
-
-//SEQUENCE TWO RIGHT FUNCTION PT. 2
-
-// START sequenceTwoRightOne
-function sequenceTwoRightOne () {
-    alert('You enter the door to the left.');
-    alert('This is as far is goes right now.');
-}
-
-// START sequenceTwoRightTwo
-function sequenceTwoRightTwo () {
-    alert('You enter the door to the right.');
-    alert('This is as far is goes right now.');
-}
-
-// START sequenceTwoRightThree
-function sequenceTwoRightThree () {
-    alert('You climb the stairs and go through the door.');
-    alert('This is as far is goes right now.');
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
